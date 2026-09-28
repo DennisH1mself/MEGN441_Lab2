@@ -1,0 +1,5 @@
+ttyCH341USB0
+ros2 run sllidar_ros2 sllidar_node --ros-args \
+  -p serial_port:=/dev/ttyCH341USB0 \
+  -p frame_id:=lidar_frame \
+  -p serial_baudrate:=115200

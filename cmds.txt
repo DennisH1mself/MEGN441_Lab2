@@ -1,0 +1,10 @@
+ros2 run sllidar_ros2 sllidar_node --ros-args -p "serial_baudrate:=115200" -p "serial_port:=/dev/ttyCH341USB0" -p "frame_id:=lidar_frame"
+ros2 launch orbbec_camera dabai_dcw.launch.py camera_name:=depth_cam publish_tf:=true
+ros2 run rosbot teleop_joy
+ros2 launch slam_toolbox online_async_launch.py scan:=/sllidar_node
+
+cd ~/b7_ws
+source install/setup.zsh
+ssh ubuntu@192.168.149.1
+
+ros2 service call /slam_toolbox/serialize_mal slam_toolbox/srv/SerializePoseGraph "
