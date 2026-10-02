@@ -1,10 +1,9 @@
-import os
 from ament_index_python.packages import get_package_share_directory
 import launch
 import launch_ros.actions
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-
+import os
 def generate_launch_description():
     # Find the location of the package on your computer
     camera_pkg_path = get_package_share_directory('orbbec_camera')
@@ -18,9 +17,10 @@ def generate_launch_description():
         # Don't edit the remapping.
         # It is needed for the lidar filter included below.
         parameters=[{
-            "serial_port": "/dev/ttyCH341USB0",
+            "serial_port": "/dev/ttyCH341USB0" if os.path.exists("/dev/ttyCH341USB0") else "/dev/ttyCH341USB1", 
             "serial_baudrate": 115200,
             "frame_id": "lidar_frame",
+            "angle_compensate": True,
         }],
         remappings=[('scan', 'scan_raw')]
     )
@@ -51,7 +51,7 @@ def generate_launch_description():
         executable='rviz2',
         output='screen',
         arguments=[
-            "-d", os.path.join('~', 'b7_ws/rviz_config.rviz')
+            "-d", os.path.expanduser('~/b7_ws/rviz_config.rviz')
         ]
     )
     return launch.LaunchDescription([
